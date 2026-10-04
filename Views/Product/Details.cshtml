@@ -1,0 +1,122 @@
+﻿@model ProductDetailsViewModel
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-5">
+
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl"
+                     class="img-fluid rounded shadow"
+                     alt="@Model.Name" />
+            }
+            else
+            {
+                <div class="alert alert-secondary">
+                    No image available.
+                </div>
+            }
+
+        </div>
+
+        <div class="col-md-7">
+
+            <h1>@Model.Name</h1>
+
+            <hr />
+
+            <p>
+                <strong>Description:</strong>
+            </p>
+
+            <p>
+                @Model.Description
+            </p>
+
+            <p>
+                <strong>Price:</strong>
+                @Model.Price.ToString("C")
+            </p>
+
+            <p>
+                <strong>Available Quantity:</strong>
+                @Model.AvailableQuantity
+            </p>
+
+            <p>
+                <strong>Category:</strong>
+                @Model.CategoryName
+            </p>
+
+            <p>
+                <strong>Seller:</strong>
+                @Model.SellerName
+            </p>
+
+            <hr />
+
+            <h4>Reviews</h4>
+
+            <p>
+                <strong>Average Rating:</strong>
+                @Model.AverageRating.ToString("0.0") / 5
+            </p>
+
+            <p>
+                <strong>Total Reviews:</strong>
+                @Model.ReviewCount
+            </p>
+
+        </div>
+
+    </div>
+
+    <hr />
+
+    <h3>Customer Reviews</h3>
+
+    @if (Model.Reviews == null || !Model.Reviews.Any())
+    {
+        <div class="alert alert-info">
+            No reviews yet.
+        </div>
+    }
+    else
+    {
+        @foreach (var review in Model.Reviews)
+        {
+            <div class="card mb-3">
+
+                <div class="card-body">
+
+                    <h5>
+                        @review.CustomerName
+                    </h5>
+
+                    <p>
+                        <strong>Rating:</strong>
+                        @review.Rating / 5
+                    </p>
+
+                    <p>
+                        @review.Comment
+                    </p>
+
+                </div>
+
+            </div>
+        }
+    }
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Back to Products
+    </a>
+
+</div>

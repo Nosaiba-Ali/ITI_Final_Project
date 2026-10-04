@@ -1,0 +1,124 @@
+﻿@model IEnumerable<ProductListViewModel>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h1 class="mb-4">Products</h1>
+
+<form asp-action="Index" method="get" class="row g-3 mb-4">
+
+    <div class="col-md-4">
+        <label class="form-label">Search</label>
+        <input type="text"
+               name="searchTerm"
+               value="@ViewData["CurrentFilter"]"
+               class="form-control"
+               placeholder="Search by name or description..." />
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Category</label>
+
+        <select name="categoryId"
+                class="form-select"
+                asp-items="@(ViewBag.Categories as SelectList)">
+            <option value="">All Categories</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Sort By</label>
+
+        <select name="sortOrder" class="form-select">
+            <option value="">Default</option>
+
+            <option value="name"
+                    selected="@(ViewData["CurrentSort"]?.ToString() == "name")">
+                Name
+            </option>
+
+            <option value="price"
+                    selected="@(ViewData["CurrentSort"]?.ToString() == "price")">
+                Price
+            </option>
+        </select>
+    </div>
+
+    <div class="col-md-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">
+            Search
+        </button>
+    </div>
+
+</form>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">
+        No products found.
+    </div>
+}
+else
+{
+    <div class="row">
+
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4 mb-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    @if (!string.IsNullOrEmpty(product.ImageUrl))
+                    {
+                        <img src="@product.ImageUrl"
+                             class="card-img-top"
+                             style="height:220px; object-fit:cover;"
+                             alt="@product.Name" />
+                    }
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            @product.Name
+                        </h5>
+
+                        <p class="card-text">
+                            <strong>Price:</strong>
+                            @product.Price.ToString("C")
+                        </p>
+
+                        <p class="card-text">
+                            <strong>Quantity:</strong>
+                            @product.AvailableQuantity
+                        </p>
+
+                        <p class="card-text">
+                            <strong>Category:</strong>
+                            @product.CategoryName
+                        </p>
+
+                        <p class="card-text">
+                            <strong>Seller:</strong>
+                            @product.SellerName
+                        </p>
+
+                    </div>
+
+                    <div class="card-footer">
+
+                        <a asp-action="Details"
+                           asp-route-id="@product.Id"
+                           class="btn btn-info">
+                            Details
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+}
