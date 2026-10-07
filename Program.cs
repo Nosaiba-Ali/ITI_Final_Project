@@ -3,6 +3,7 @@ using Final_Project.Enums;
 using Final_Project.Models;
 using Final_Project.Repositories;
 using Final_Project.Repositories.Interfaces;
+using Final_Project.Services;
 using Final_Project.Sevices;
 using Final_Project.Sevices.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,6 +27,10 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
+
+// Module 5: Admin & Review Services
+builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? "SUPER_SECRET_KEY_FOR_JWT_MARKETPLACE_2026_PROJECT");
@@ -103,4 +108,3 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
-// Module 5 Admin and Reviews
