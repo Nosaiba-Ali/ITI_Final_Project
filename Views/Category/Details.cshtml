@@ -1,0 +1,141 @@
+﻿@model CategoryDetailsViewModel
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h1>Category Details</h1>
+
+        <div>
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-warning">
+                Edit
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back to Categories
+            </a>
+        </div>
+
+    </div>
+
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h3 class="card-title">
+                @Model.Name
+            </h3>
+
+            <hr />
+
+            <p>
+                <strong>Description:</strong>
+            </p>
+
+            <p>
+                @(string.IsNullOrWhiteSpace(Model.Description)
+                    ? "No description available."
+                    : Model.Description)
+            </p>
+
+            <p>
+                <strong>Number of Products:</strong>
+                @Model.Products.Count
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <h3 class="mb-3">Products in this Category</h3>
+
+
+    @if (Model.Products == null || !Model.Products.Any())
+    {
+        <div class="alert alert-info">
+            There are no products in this category.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead class="table-dark">
+
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Available Quantity</th>
+                        <th>Actions</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var product in Model.Products)
+                    {
+                        <tr>
+
+                            <td>
+                                @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                {
+                                    <img src="@product.ImageUrl"
+                                         alt="@product.Name"
+                                         width="70"
+                                         height="70"
+                                         style="object-fit: cover;"
+                                         class="rounded" />
+                                }
+                                else
+                                {
+                                    <span class="text-muted">
+                                        No Image
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                @product.Name
+                            </td>
+
+                            <td>
+                                @product.Price.ToString("C")
+                            </td>
+
+                            <td>
+                                @product.AvailableQuantity
+                            </td>
+
+                            <td>
+                                <a asp-controller="Product"
+                                   asp-action="Details"
+                                   asp-route-id="@product.Id"
+                                   class="btn btn-sm btn-info">
+                                    Details
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+
+</div>

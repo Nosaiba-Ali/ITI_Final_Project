@@ -1,0 +1,165 @@
+﻿﻿
+@model ProductEditViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-8">
+
+        <h1 class="mb-4">Edit Product</h1>
+
+        <form asp-action="Edit"
+              asp-route-id="@Model.Id"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden"
+                   asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="Name"
+                       class="form-label">
+                </label>
+
+                <input asp-for="Name"
+                       class="form-control" />
+
+                <span asp-validation-for="Name"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="Description"
+                       class="form-label">
+                </label>
+
+                <textarea asp-for="Description"
+                          class="form-control"
+                          rows="4">
+                </textarea>
+
+                <span asp-validation-for="Description"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="mb-3">
+
+                        <label asp-for="Price"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="Price"
+                               class="form-control" />
+
+                        <span asp-validation-for="Price"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="mb-3">
+
+                        <label asp-for="AvailableQuantity"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="AvailableQuantity"
+                               class="form-control" />
+
+                        <span asp-validation-for="AvailableQuantity"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="CategoryId"
+                       class="form-label">
+                    Category
+                </label>
+
+                <select asp-for="CategoryId"
+                        asp-items="@(new SelectList(Model.AvailableCategories, "Id", "Name", Model.CategoryId))"
+                        class="form-select">
+
+                    <option value="">
+                        -- Select Category --
+                    </option>
+
+                </select>
+
+                <span asp-validation-for="CategoryId"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="ImageUrl"
+                       class="form-label">
+                </label>
+
+                <input asp-for="ImageUrl"
+                       class="form-control" />
+
+                <span asp-validation-for="ImageUrl"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="d-flex gap-2">
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Save Changes
+                </button>
+
+                <a asp-action="GetProductsBySeller"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
